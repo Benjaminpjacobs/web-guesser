@@ -1,12 +1,13 @@
 require 'sinatra'
 require 'sinatra/reloader'
 
-SECRET_NUMBER = rand(100)
-GAME_OVER = "You got it right! The SECRET SECRET_NUMBER is #{SECRET_NUMBER}"
 
 TH = "Too High!"
 TL = "Too Low!"
 W = "Way "
+@@secret_number = rand(100)
+@@guess_count = 5
+GAME_OVER = "You got it right! The SECRET secret_number is #{@@secret_number}"
 
 
 
@@ -21,27 +22,32 @@ def check_guess(guess)
     @@color = '#ff0000'
     message = ''
   else
+    @@guess_count -= 1
     message = compare_guess(guess)
   end
   message
 end
 
 def compare_guess(guess)
-  if guess.to_i > SECRET_NUMBER + 5
-    @@color = '#ff0000'
-    message = W + TH
-  elsif guess.to_i > SECRET_NUMBER
-    @@color = '#ff4d4d'
-    message = TH
-  elsif guess.to_i < SECRET_NUMBER - 5
-    @@color = '#ff0000'
-    message = W + TL
-  elsif guess.to_i < SECRET_NUMBER
-    @@color = '#ff4d4d'
-    message = "Too Low!"
-  elsif guess.to_i == SECRET_NUMBER
+  if guess.to_i == @@secret_number
     @@color = '#33cc33'
     message = GAME_OVER
+  elsif @@guess_count == 0
+    @@secret_number = rand(100)
+    @@guess_count = 5
+    message = "Game over, new number selected"
+  elsif guess.to_i > @@secret_number + 5
+    @@color = '#ff0000'
+    message = W + TH
+  elsif guess.to_i > @@secret_number
+    @@color = '#ff4d4d'
+    message = TH
+  elsif guess.to_i < @@secret_number - 5
+    @@color = '#ff0000'
+    message = W + TL
+  elsif guess.to_i < @@secret_number
+    @@color = '#ff4d4d'
+    message = "Too Low!"
   end
   message
 end
