@@ -2,19 +2,19 @@ require 'sinatra'
 require 'sinatra/reloader'
 
 
-TH = "Too High!"
-TL = "Too Low!"
-W = "Way "
+
 @@secret_number = rand(100)
-@@guess_count = 5
-GAME_OVER = "You got it right! The SECRET secret_number is #{@@secret_number}"
-
-
+@@guess_count = 10
 
 get '/' do 
   guess = params["guess"]
   message = check_guess(guess)
-  erb :index, :locals => {:message => message, :color => @@color }
+  if params["cheat"]
+    erb :index, :locals => {:message => message + "</br>The SECRET NUMBER is #{@@secret_number}", :color => @@color }
+  else
+    erb :index, :locals => {:message => message, :color => @@color }
+  end
+  
 end
 
 def check_guess(guess)
@@ -23,31 +23,70 @@ def check_guess(guess)
     message = ''
   else
     @@guess_count -= 1
-    message = compare_guess(guess)
+    message = check_count_compare_guess(guess)
   end
-  message
 end
 
-def compare_guess(guess)
-  if guess.to_i == @@secret_number
-    @@color = '#33cc33'
-    message = GAME_OVER
-  elsif @@guess_count == 0
-    @@secret_number = rand(100)
-    @@guess_count = 5
-    message = "Game over, new number selected"
-  elsif guess.to_i > @@secret_number + 5
-    @@color = '#ff0000'
-    message = W + TH
-  elsif guess.to_i > @@secret_number
-    @@color = '#ff4d4d'
-    message = TH
-  elsif guess.to_i < @@secret_number - 5
-    @@color = '#ff0000'
-    message = W + TL
-  elsif guess.to_i < @@secret_number
-    @@color = '#ff4d4d'
-    message = "Too Low!"
+def check_count_compare_guess(guess)
+  if @@guess_count == 0
+    reset_game
+    return game_over
   end
-  message
+  compare_difference(guess)
 end
+
+def compare_difference(guess)
+  diff = guess.to_i - @@secret_number
+
+  is_correct = ->(diff) {diff == 0}
+  is_way_too_high = ->(diff) {diff >= 5}
+  is_too_high = ->(diff) {diff > 5}
+  is_way_too_low = ->(diff) {diff <= -5}
+  
+
+  case diff
+  when is_correct then correct
+  when is_way_too_high then way_too_high
+  when is_too_high then too_high
+  when is_way_too_low then way_too_low
+  else too_low
+  end
+end
+
+private
+
+  def reset_game
+    
+    @@secret_number = rand(100)
+    @@guess_count = 10
+  end
+
+  def correct
+    @@color = '#33cc33'
+    "You got it right! </br> The SECRET NUMBER is #{@@secret_number}"
+  end
+
+  def way_too_high
+    @@color = '#ff0000'
+    "Way Too High!"
+  end
+
+  def too_high
+    @@color = '#ff4d4d'
+    "Too High!"
+  end
+
+  def way_too_low
+    @@color = '#ff0000'
+    "Way Too Low!"
+  end
+
+  def too_low
+    @@color = '#ff4d4d'
+    "Too Low!"
+  end
+
+  def game_over
+    @@color = '#ff0000'
+    "Game over, new number selected"
+  end
