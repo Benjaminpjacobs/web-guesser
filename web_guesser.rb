@@ -1,8 +1,6 @@
 require 'sinatra'
 require 'sinatra/reloader'
 
-
-
 @@secret_number = rand(100)
 @@guess_count = 10
 
@@ -14,7 +12,6 @@ get '/' do
   else
     erb :index, :locals => {:message => message, :color => @@color }
   end
-  
 end
 
 def check_guess(guess)
@@ -43,7 +40,6 @@ def compare_difference(guess)
   is_too_high = ->(diff) {diff > 5}
   is_way_too_low = ->(diff) {diff <= -5}
   
-
   case diff
   when is_correct then correct
   when is_way_too_high then way_too_high
@@ -56,7 +52,6 @@ end
 private
 
   def reset_game
-    
     @@secret_number = rand(100)
     @@guess_count = 10
   end
