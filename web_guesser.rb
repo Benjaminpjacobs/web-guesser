@@ -16,7 +16,7 @@ end
 
 def check_guess(guess)
   if guess.nil?
-    @@color = '#ff0000'
+    @@color = 'rgb(199, 29, 29)'
     message = ''
   else
     @@guess_count -= 1
@@ -57,31 +57,31 @@ private
   end
 
   def correct
-    @@color = '#33cc33'
-    "You got it right! </br> The SECRET NUMBER is #{@@secret_number}"
+    @@color = 'rgba(83, 206, 83, 0.8)'
+    "You got it right! <br><br> The SECRET NUMBER is #{@@secret_number}"
   end
 
   def way_too_high
-    @@color = '#ff0000'
+    @@color = 'rgba(199, 29, 29, 0.5)'
     "Way Too High!"
   end
 
   def too_high
-    @@color = '#ff4d4d'
+    @@color = 'rgba(199, 29, 29, 0.9)'
     "Too High!"
   end
 
   def way_too_low
-    @@color = '#ff0000'
+    @@color = 'rgba(199, 29, 29, 0.9)'
     "Way Too Low!"
   end
 
   def too_low
-    @@color = '#ff4d4d'
+    @@color = 'rgba(199, 29, 29, 0.5)'
     "Too Low!"
   end
 
   def game_over
-    @@color = '#ff0000'
+    @@color = 'rgba(199, 29, 29, 1.0)'
     "Game over, new number selected"
   end

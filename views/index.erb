@@ -1,21 +1,27 @@
 <html>  
   <head>
+  <link href="assets/stylesheets/main.css" rel="stylesheet">
     <style>
       body {
-        background: <%= color %>
+        background: <%= color %>;
+        font: 300 16px/22px "Helvetica Neue"
       }
     </style>
     <title>Web Gusser</title>
   </head>
   <body>
-  <h1 align="center">Can you guess the number between 0 and 100?</h1>
-  <div>
+  <div style="padding-bottom:150px; margin-bottom: 50px; border-bottom: solid">
+  </div>
+  <div style="border: solid black; border-radius: 15px; width:50%; margin:auto">
+  <h1 style= "text-align:center">Can you guess the number between 0 and 100?</h1>
     <form align="center">
-      <input type='text' name='guess' />
-      <input type='submit' value='Guess!' />
+      <input style= "border:1px solid black; border-radius: 5px; " type='text' name='guess' />
+      <input style="border-raidus: 5px; cursor: pointer;, display:inline-block; font-weight: 400; letter-spacing; .5px; text-transform: uppercase;" type='submit' value='Guess!' />
     </form>
   </div>
-    <h3 align="center"><%= message %> </h3>
+    <h3 style="text-align:center; padding-top: 50px"><%= message %></h3>
+  <div style="padding-bottom:100px; margin-bottom: 50px; border-bottom: solid">
+  </div>
   </body>
 
 </html>
